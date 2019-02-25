@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export PYTHONPATH=./src/:$PYTHONPATH
+
+exec ./venv/bin/python ./src/__init__.py $@

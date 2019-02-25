@@ -1,0 +1,13 @@
+[style]
+based_on_style=google
+blank_lines_around_top_level_definition=1
+column_limit=120
+dedent_closing_brackets=True
+join_multiple_lines=False
+spaces_around_power_operator=True
+spaces_before_comment=1
+split_all_comma_separated_values=True
+split_before_dot=True
+split_before_expression_after_opening_paren=True
+split_before_first_argument=True
+split_penalty_after_opening_bracket=0

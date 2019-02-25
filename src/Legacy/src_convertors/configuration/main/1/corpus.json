@@ -1,0 +1,55 @@
+{
+  "meta_filename": "meta.csv",
+  "meta_in_header": true,
+  "speaker_meta_filename": "speaker_meta.json",
+  "meta_fields":
+  [
+    "filename",
+    "author",
+    "title",
+    "genre",
+    "year_from",
+    "year_to",
+    "type",
+    "sphere",
+    "topic",
+    "genre_fi",
+    "sex",
+    "year_birth",
+    "year_publ",
+    "chronotop",
+    "publication",
+    "medium",
+    "country",
+    "region",
+    "tagging",
+    "words",
+    "sentences"
+  ],
+  "corpus_type": "main",
+  "multivalued_ana_features": ["sem", "sem2", "flags"],
+  "gramtags_exclude": ["norm"],
+  "languages": ["russian"],
+  "meta_files_ext": false,
+  "meta_files_dir": false,
+  "meta_files_case_sensitive": true,
+  "parsed_wordlist_filename": "all_parsed.txt",
+  "parsed_wordlist_format": "xml_rnc",
+  "cg_disambiguate": false,
+  "json_indent": -1,
+  "convert_quotes": true,
+  "gzip": true,
+  "clean_words_rnc": true,
+  "left_quot_mark": "«",
+  "right_quot_mark": "»",
+  "sent_end_punc": "(?:[.!?;;]+(?:[)\\]}>/»]|$)|\\\\n)",
+  "sent_start": "^[A-ZÄÖÜА-ЯЁӤӦӴӞӜ]",
+  "newline_ends_sent": true,
+  "special_tokens": {
+  },
+  "abbreviations": [],
+  "glosses": {
+    "russian": [
+    ]
+  }
+}
