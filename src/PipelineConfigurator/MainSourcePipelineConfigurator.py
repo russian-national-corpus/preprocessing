@@ -12,6 +12,9 @@ from src.PipelineConfigurator.IPipelineConfigurator import IPipelineConfigurator
 # todo: remove pylint workaround when this file will be different from MainStandardPipelineConfigurator.py
 class MainSourcePipelineConfigurator(IPipelineConfigurator):
 
+    def __init__(self, path_to_mystem_binary: Path) -> None:
+        self.path_to_mystem_binary = path_to_mystem_binary
+
     def get_pipeline(self, corpus_source: CorpusSource, destination_directory: Path) -> Pipeline:
 
         file_system = FileSystem()
@@ -19,7 +22,7 @@ class MainSourcePipelineConfigurator(IPipelineConfigurator):
         return Pipeline(
             corpus_source,
             [
-                LegacyPreprocessingStep(file_system),
+                LegacyPreprocessingStep(file_system, self.path_to_mystem_binary),
                 LegacyConvertRncXmlToTsakorpusJsonStep(
                     file_system.get_project_root() / 'src/Legacy/src_convertors/configuration/main',
                     destination_directory
