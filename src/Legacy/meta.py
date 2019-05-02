@@ -50,14 +50,14 @@ def parseDate(date):
                         month = int(d[0][4:])
                         day = 0
                     else:
-                        print >>sys.stderr, "parseDate-1:", date
+                        print "parseDate-1:", date
                         raise AssertionError
                 elif len(d) == 2:
                     if len(d[0]) == 4 and len(d[1]) == 2:
                         year = d[0]
                         month = d[1]
                     else:
-                        print >>sys.stderr, "parseDate-2:", date
+                        print "parseDate-2:", date
                         raise AssertionError
                 elif len(d) == 3:
                     if len(d[0]) == 4 and len(d[1]) <= 2 and len(d[2]) <= 2:
@@ -69,10 +69,10 @@ def parseDate(date):
                         month = int(d[1])
                         day = int(d[0])
                     else:
-                        print >>sys.stderr, "parseDate-3:", date
+                        print "parseDate-3:", date
                         raise AssertionError
                 else:
-                    print >>sys.stderr, "parseDate-4:", date
+                    print "parseDate-4:", date
                     raise AssertionError
 
                 if year != None:
@@ -91,7 +91,7 @@ def parseDate(date):
             elif len(q) > 0:
                 y.append([q[0]])
             else:
-                print >>sys.stderr, "parseDate-5:", date
+                print "parseDate-5:", date
                 raise AssertionError
     return y
 
@@ -152,7 +152,7 @@ class CheckHandler(xml.sax.handler.ContentHandler):
                 if len(x) > 1:
                     path = normalizePath(x[0])
                     if not self.latin.match(path):
-                        print >>sys.stderr, "Bad name:", path.encode("utf-8")
+                        print >>self.out, "Bad name:", path.encode("utf-8")
                         errors_number += 1
                         continue
                     title = x[1]
@@ -172,7 +172,7 @@ class CheckHandler(xml.sax.handler.ContentHandler):
                     errors_number += 1
         except:
             errors_number += 1
-            print >>sys.stderr, sys.exc_info()
+            print sys.exc_info()
             self.table = {}
             self.header = []
         global ERRORS_NUMBER
