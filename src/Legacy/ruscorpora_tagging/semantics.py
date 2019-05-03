@@ -60,6 +60,7 @@ class SemanticDictionary:
 
         headers = []
         if filename != None and len(filename) > 0:
+            print "semantics.py: processing file " + filename
             src = codecs.getreader("utf-8")(file(filename, "rb"))
             for line in src:
                 tokens = line.strip().split(";")
