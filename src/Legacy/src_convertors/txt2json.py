@@ -67,6 +67,11 @@ class Txt2JSON:
         if 'error_log' in self.corpusSettings:
             self.errorLog = self.corpusSettings['error_log']
             try:
+                errorLogDirectory = os.path.dirname(self.errorLog)
+
+                if not os.path.exists(errorLogDirectory):
+                    os.makedirs(errorLogDirectory)
+
                 # Clean the log
                 fLog = open(self.errorLog, 'w', encoding='utf-8')
                 fLog.close()
