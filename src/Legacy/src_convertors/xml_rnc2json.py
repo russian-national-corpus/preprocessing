@@ -1,8 +1,5 @@
-import os
 import re
-import json
 from lxml import etree
-
 from src.Legacy.src_convertors.txt2json import Txt2JSON
 
 
@@ -242,40 +239,43 @@ class Xml_Rnc2JSON(Txt2JSON):
     def convert_file(self, fnameSrc, fnameTarget):
         textJSON = {'meta': {}, 'sentences': []}
         nTokens, nWords, nAnalyzed = 0, 0, 0
-        srcTree = etree.parse(fnameSrc)
-        if 'meta_in_header' not in self.corpusSettings or not self.corpusSettings['meta_in_header']:
-            textJSON['meta'] = self.get_meta(fnameSrc)
-        else:
-            textJSON['meta'] = self.get_meta_from_header(srcTree, fnameSrc)
-        if 'corpus_type' in self.corpusSettings and self.corpusSettings['corpus_type'] == 'parallel':
-            textJSON['sentences'] = [s for paraNode in srcTree.xpath('/html/body/para|/html/body/p/para')
-                                     for s in self.process_para_node(paraNode)]
-            textJSON['sentences'].sort(key=lambda s: s['lang'])
-        else:
-            textJSON['sentences'] = []
-            for pNode in srcTree.xpath('/html/body/p'):
-                curSentences = [s for s in self.process_p_node(pNode)]
-                if len(curSentences) > 0:
-                    # Add a newline to the end of each paragraph
-                    curSentences[-1]['text'] += '\n'
-                    curSentences[-1]['words'].append({'wtype': 'punc',
-                                                      'wf': '\n',
-                                                      'off_start': len(curSentences[-1]['text']) - 1,
-                                                      'off_end': len(curSentences[-1]['text'])})
-                    textJSON['sentences'] += curSentences
-            if len(textJSON['sentences']) > 0:
-                textJSON['sentences'][-1]['last'] = True
-        for i in range(len(textJSON['sentences']) - 1):
-            if textJSON['sentences'][i]['lang'] != textJSON['sentences'][i + 1]['lang']:
-                textJSON['sentences'][i]['last'] = True
-            for word in textJSON['sentences'][i]['words']:
-                nTokens += 1
-                if word['wtype'] == 'word':
-                    nWords += 1
-                    if 'ana' in word and len(word['ana']) > 0:
-                        nAnalyzed += 1
-        self.tp.splitter.recalculate_offsets(textJSON['sentences'])
-        self.tp.splitter.add_next_word_id(textJSON['sentences'])
-        self.tp.splitter.add_contextual_flags(textJSON['sentences'])
-        self.write_output(fnameTarget, textJSON)
+        try:
+            srcTree = etree.parse(fnameSrc)
+            if 'meta_in_header' not in self.corpusSettings or not self.corpusSettings['meta_in_header']:
+                textJSON['meta'] = self.get_meta(fnameSrc)
+            else:
+                textJSON['meta'] = self.get_meta_from_header(srcTree, fnameSrc)
+            if 'corpus_type' in self.corpusSettings and self.corpusSettings['corpus_type'] == 'parallel':
+                textJSON['sentences'] = [s for paraNode in srcTree.xpath('/html/body/para|/html/body/p/para')
+                                         for s in self.process_para_node(paraNode)]
+                textJSON['sentences'].sort(key=lambda s: s['lang'])
+            else:
+                textJSON['sentences'] = []
+                for pNode in srcTree.xpath('/html/body/p'):
+                    curSentences = [s for s in self.process_p_node(pNode)]
+                    if len(curSentences) > 0:
+                        # Add a newline to the end of each paragraph
+                        curSentences[-1]['text'] += '\n'
+                        curSentences[-1]['words'].append({'wtype': 'punc',
+                                                          'wf': '\n',
+                                                          'off_start': len(curSentences[-1]['text']) - 1,
+                                                          'off_end': len(curSentences[-1]['text'])})
+                        textJSON['sentences'] += curSentences
+                if len(textJSON['sentences']) > 0:
+                    textJSON['sentences'][-1]['last'] = True
+            for i in range(len(textJSON['sentences']) - 1):
+                if textJSON['sentences'][i]['lang'] != textJSON['sentences'][i + 1]['lang']:
+                    textJSON['sentences'][i]['last'] = True
+                for word in textJSON['sentences'][i]['words']:
+                    nTokens += 1
+                    if word['wtype'] == 'word':
+                        nWords += 1
+                        if 'ana' in word and len(word['ana']) > 0:
+                            nAnalyzed += 1
+            self.tp.splitter.recalculate_offsets(textJSON['sentences'])
+            self.tp.splitter.add_next_word_id(textJSON['sentences'])
+            self.tp.splitter.add_contextual_flags(textJSON['sentences'])
+            self.write_output(fnameTarget, textJSON)
+        except:
+            print('Error: ', fnameSrc)
         return nTokens, nWords, nAnalyzed
